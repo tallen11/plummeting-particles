@@ -42,7 +42,11 @@ fn main() {
     event_settings.ups = UPDATES_PER_SECOND;
 
     let mut mouse_down = false;
-    let particle_types = vec![ParticleType::Sand, ParticleType::Empty, ParticleType::Wall, ParticleType::Wood];
+    let particle_types = vec![ParticleType::Sand,
+                              ParticleType::Empty,
+                              ParticleType::Wall,
+                              ParticleType::Wood,
+                              ParticleType::Fire];
     let mut particle_type = ParticleType::Sand;
 
     let mut events = Events::new(event_settings);

@@ -6,6 +6,7 @@ pub enum ParticleType {
     Wall,
     Sand,
     Wood,
+    Fire,
 }
 
 impl ParticleType {
@@ -29,13 +30,24 @@ impl ParticleType {
     }
 
     fn update_wood(&self, context: &mut Context) {
-        
+
+    }
+
+    fn update_fire(&self, context: &mut Context) {
+        let random_dir_row = context.random_dir();
+        let random_dir_col = context.random_dir();
+
+        if context.get(random_dir_row, random_dir_col).get_type() == ParticleType::Empty {
+            context.set(ParticleType::Empty, 0, 0);
+            context.set(ParticleType::Fire, random_dir_row, random_dir_col);
+        }
     }
 }
 
 #[derive(Copy, Clone, Debug)]
 pub struct Particle {
     particle_type: ParticleType,
+    r_a: u8,
     updated: bool,
 }
 
@@ -43,6 +55,7 @@ impl Particle {
     pub fn new(particle_type: ParticleType) -> Self {
         Self {
             particle_type: particle_type,
+            r_a: 0,
             updated: false,
         }
     }
@@ -69,6 +82,7 @@ impl Particle {
             ParticleType::Wall => self.particle_type.update_wall(context),
             ParticleType::Sand => self.particle_type.update_sand(context),
             ParticleType::Wood => self.particle_type.update_wood(context),
+            ParticleType::Fire => self.particle_type.update_fire(context),
         }
     }
 }

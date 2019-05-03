@@ -60,6 +60,7 @@ impl Simulation {
                 ParticleType::Wall =>  [255, 255, 255, 255],
                 ParticleType::Sand =>  [255, 255, 0, 255],
                 ParticleType::Wood =>  [112, 65, 15, 255],
+                ParticleType::Fire =>  [221, 66, 42, 255],
             }
         }).collect()
     }
