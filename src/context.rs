@@ -55,11 +55,19 @@ impl<'a> Context<'a> {
         self.simulation_particles[index as usize]
     }
 
+    pub fn get_updates(&self) -> Vec<ContextUpdateType> {
+        self.updates.to_vec()
+    }
+
     pub fn random_dir(&mut self) -> i32 {
         self.rng.gen_range(0, 3) - 1
     }
 
-    pub fn get_updates(&self) -> Vec<ContextUpdateType> {
-        self.updates.to_vec()
+    pub fn random_chance(&mut self, chance: f32) -> bool {
+        self.rng.gen::<f32>() < chance
+    }
+
+    pub fn random(&mut self, lower: u8, upper: u8) -> u8 {
+        self.rng.gen_range(lower, upper)
     }
 }

@@ -42,12 +42,13 @@ fn main() {
     event_settings.ups = UPDATES_PER_SECOND;
 
     let mut mouse_down = false;
-    let particle_types = vec![ParticleType::Sand,
-                              ParticleType::Empty,
-                              ParticleType::Wall,
-                              ParticleType::Wood,
-                              ParticleType::Fire];
-    let mut particle_type = ParticleType::Sand;
+    let particles = vec![Particle::new(ParticleType::Empty),
+                         Particle::new(ParticleType::Sand),
+                         Particle::new(ParticleType::Wall),
+                         Particle::new(ParticleType::Wood),
+                         Particle { particle_type: ParticleType::Fire, r_a: 50, updated: false }, 
+                        ];
+    let mut selected_particle = particles[1];
 
     let mut events = Events::new(event_settings);
     while let Some(event) = events.next(&mut window) {
@@ -81,11 +82,11 @@ fn main() {
                     ButtonArgs { state: ButtonState::Press, button: Keyboard(key), .. } => {
                         if key.code() >= 48 && key.code() <= 57 {
                             let number = (key.code() - 48) as usize;
-                            if number >= particle_types.len() {
+                            if number >= particles.len() {
                                 break;
                             }
 
-                            particle_type = particle_types[number];
+                            selected_particle = particles[number];
                         }
                     },
                     _ => {}
@@ -102,7 +103,7 @@ fn main() {
                                 continue;
                             }
 
-                            simulation.set_particle(Particle::new(particle_type), row as usize, col as usize);
+                            simulation.set_particle(selected_particle, row as usize, col as usize);
                         }
                     }
                 }

@@ -36,21 +36,59 @@ impl ParticleType {
     }
 
     fn update_fire(&self, context: &mut Context) {
+        let p = context.get(0, 0);
+
+        if p.r_a == 0 {
+            context.set(EMPTY_PARTICLE, 0, 0);
+            return;
+        }
+
         let random_dir_row = context.random_dir();
         let random_dir_col = context.random_dir();
+        let n = context.get(random_dir_row, random_dir_col);
 
-        if context.get(random_dir_row, random_dir_col).get_type() == ParticleType::Empty {
+        if n.get_type() == ParticleType::Empty {
+            // let dur = context.random(0, 2) - 1;
+
             context.set(EMPTY_PARTICLE, 0, 0);
-            context.set(Particle::new(ParticleType::Fire), random_dir_row, random_dir_col);
+            context.set(Particle {
+                particle_type: ParticleType::Fire,
+                r_a: if p.r_a > 50 { 50 } else { p.r_a - 1 },
+                updated: false,
+            }, random_dir_row, random_dir_col);
+        } else if n.get_type() == ParticleType::Wood {
+            if context.random_chance(0.1) {
+                let extra = context.random(50, 70);
+
+                context.set(Particle {
+                    particle_type: ParticleType::Fire,
+                    r_a: p.r_a - 1,
+                    updated: false,
+                }, 0, 0);
+                
+                context.set(Particle {
+                    particle_type: ParticleType::Fire,
+                    r_a: p.r_a + extra,
+                    updated: false,
+                }, random_dir_row, random_dir_col);
+            }
+        } else {
+            // let dur = context.random(0, 2) - 1;
+
+            context.set(Particle {
+                particle_type: ParticleType::Fire,
+                r_a: p.r_a - 1,
+                updated: false,
+            }, 0, 0);
         }
     }
 }
 
 #[derive(Copy, Clone, Debug)]
 pub struct Particle {
-    particle_type: ParticleType,
-    r_a: u8,
-    updated: bool,
+    pub particle_type: ParticleType,
+    pub r_a: u8,
+    pub updated: bool,
 }
 
 impl Particle {
