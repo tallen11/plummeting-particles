@@ -36,8 +36,8 @@ impl Simulation {
 
                 for update in context.get_updates() {
                     match update {
-                        ContextUpdateType::Set(p_type, index) => {
-                            self.particles[index as usize].set_type(p_type);
+                        ContextUpdateType::Set(particle, index) => {
+                            self.particles[index as usize] = particle; //.set_type(p_type);
                             self.particles[index as usize].set_updated(true);
                         }
                     }
@@ -45,11 +45,6 @@ impl Simulation {
             } else {
                 self.particles[i].set_updated(false);
             }
-
-            // if context.get_updates().len() > 0 {
-            // println!("{}", context.get_updates().len());
-            // println!("{}, {}", row, col);
-            // }
         }
     }
 

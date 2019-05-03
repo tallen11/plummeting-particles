@@ -9,6 +9,8 @@ pub enum ParticleType {
     Fire,
 }
 
+const EMPTY_PARTICLE: Particle = Particle { particle_type: ParticleType::Empty, r_a: 0, updated: false };
+
 impl ParticleType {
     fn update_empty(&self, context: &mut Context) {
 
@@ -21,11 +23,11 @@ impl ParticleType {
     fn update_sand(&self, context: &mut Context) {
         let dir = context.random_dir();
         if context.get(1, 0).get_type() == ParticleType::Empty {
-            context.set(ParticleType::Empty, 0, 0);
-            context.set(ParticleType::Sand, 1, 0);
+            context.set(EMPTY_PARTICLE, 0, 0);
+            context.set(Particle::new(ParticleType::Sand), 1, 0);
         } else if context.get(1, dir).get_type() == ParticleType::Empty {
-            context.set(ParticleType::Empty, 0, 0);
-            context.set(ParticleType::Sand, 1, dir);
+            context.set(EMPTY_PARTICLE, 0, 0);
+            context.set(Particle::new(ParticleType::Sand), 1, dir);
         }
     }
 
@@ -38,8 +40,8 @@ impl ParticleType {
         let random_dir_col = context.random_dir();
 
         if context.get(random_dir_row, random_dir_col).get_type() == ParticleType::Empty {
-            context.set(ParticleType::Empty, 0, 0);
-            context.set(ParticleType::Fire, random_dir_row, random_dir_col);
+            context.set(EMPTY_PARTICLE, 0, 0);
+            context.set(Particle::new(ParticleType::Fire), random_dir_row, random_dir_col);
         }
     }
 }

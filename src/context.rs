@@ -5,7 +5,7 @@ use crate::particle::{Particle, ParticleType};
 
 #[derive(Copy, Clone, Debug)]
 pub enum ContextUpdateType {
-    Set(ParticleType, u32),
+    Set(Particle, u32),
 }
 
 pub struct Context<'a> {
@@ -31,7 +31,7 @@ impl<'a> Context<'a> {
         }
     }
 
-    pub fn set(&mut self, particle_type: ParticleType, dr: i32, dc: i32) {
+    pub fn set(&mut self, particle: Particle, dr: i32, dc: i32) {
         let row = self.row as i32 + dr;
         let col = self.col as i32 + dc;
 
@@ -40,7 +40,7 @@ impl<'a> Context<'a> {
         }
 
         let index = col + row * self.simulation_width as i32;
-        self.updates.push(ContextUpdateType::Set(particle_type, index as u32));
+        self.updates.push(ContextUpdateType::Set(particle, index as u32));
     }
 
     pub fn get(&self, dr: i32, dc: i32) -> Particle {
